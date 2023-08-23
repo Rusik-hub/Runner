@@ -1,27 +1,58 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Parallax : MonoBehaviour
 {
-    [SerializeField, Range(0, 20)] private float _speed;
-    [SerializeField] private Transform _startPosition;
-    [SerializeField] private Transform _targetPosition;
-    [SerializeField] private Floor _floor;
+    [SerializeField] private BarrierSpawner _spawner;
+    [SerializeField] private UnityEvent _isTargetPositionAchieved;
 
-    public void IncreaseSpeed()
+    private SpeedController _speedController;
+    private Vector3 _startPosition = new Vector3(-25, 0, 0);
+    private Vector3 _targetPosition = new Vector3(125, 0, 0);
+    private float _speed = 10;
+
+    public event UnityAction IsTargetPositionAchieved
     {
-        _speed++;
+        add => _isTargetPositionAchieved.AddListener(value);
+        remove => _isTargetPositionAchieved.RemoveListener(value);
+    }
+
+    private void OnEnable()
+    {
+        _speedController = transform.parent.GetComponent<SpeedController>();
+
+        EditSpeed();
+
+        _speedController.SpeedWasIncreased += EditSpeed;
+    }
+
+    private void OnDisable()
+    {
+        _speedController.SpeedWasIncreased -= EditSpeed;
     }
 
     private void Update()
     {
-        transform.position = Vector3.MoveTowards(transform.position, _targetPosition.position, _speed * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, _targetPosition, _speed * Time.deltaTime);
 
-        if (transform.position.x >= _targetPosition.position.x)
+        if (transform.position.x >= _targetPosition.x)
         {
-            transform.position = _startPosition.position;
-            _floor.ChangeSpeed();
+            AchieveTargetPosition();
         }
+    }
+
+    private void AchieveTargetPosition()
+    {
+        transform.position = _startPosition;
+
+        _spawner.UpdateBarriersState();
+        _isTargetPositionAchieved?.Invoke();
+    }
+
+    private void EditSpeed()
+    {
+        _speed = _speedController.Speed;
     }
 }

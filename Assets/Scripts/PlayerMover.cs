@@ -6,15 +6,16 @@ using UnityEngine.Events;
 public class PlayerMover : MonoBehaviour
 {
     [SerializeField] private List<Transform> _availablePaths;
-    [SerializeField, Range(0.1f, 20f)] private float _moveSpeed;
+    [SerializeField] private SpeedController _speedController;
 
     private Coroutine _moveCoroutine;
     private int _shiftSize = 1;
-    [SerializeField] private float _stepSize;
+    private float _stepSize;
+    private float _moveSpeed;
     private int _minPathNumber = 0;
-    [SerializeField] private int _maxPathNumber;
-    [SerializeField] private int _currentPathNumber = 1;
-    [SerializeField] private Vector3 _targetPosition;
+    private int _maxPathNumber;
+    private int _currentPathNumber = 1;
+    private Vector3 _targetPosition;
 
     public void MoveLeft()
     {
@@ -47,11 +48,18 @@ public class PlayerMover : MonoBehaviour
         _maxPathNumber = _availablePaths.Count - _shiftSize;
         _targetPosition = transform.position;
         _stepSize = transform.position.z + _availablePaths[_currentPathNumber + 1].position.z;
+
+        EditSpeed();
     }
 
-    private void Update()
+    private void OnEnable()
     {
-        //empty
+        _speedController.SpeedWasIncreased += EditSpeed;
+    }
+
+    private void OnDisable()
+    {
+        _speedController.SpeedWasIncreased -= EditSpeed;
     }
 
     private IEnumerator Move()
@@ -64,5 +72,10 @@ public class PlayerMover : MonoBehaviour
         }
 
         _moveCoroutine = null;
+    }
+
+    private void EditSpeed()
+    {
+        _moveSpeed = _speedController.Speed;
     }
 }
