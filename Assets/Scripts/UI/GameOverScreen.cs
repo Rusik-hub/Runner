@@ -1,0 +1,61 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+
+[RequireComponent(typeof(CanvasGroup))]
+
+public class GameOverScreen : MonoBehaviour
+{
+    [SerializeField] private Button _retryButton;
+    [SerializeField] private Button _exitButton;
+    [SerializeField] private Player _player;
+
+    private CanvasGroup _canvasGroup;
+
+    private void ShowScreen()
+    {
+        _canvasGroup.alpha = 1;
+        _canvasGroup.blocksRaycasts = true;
+    }
+
+    private void HideScreen()
+    {
+        _canvasGroup.alpha = 0;
+        _canvasGroup.blocksRaycasts = false;
+
+        ContinueGame();
+    }
+
+    private void ContinueGame()
+    {
+        Time.timeScale = 1;
+    }
+
+    private void OpenMainMenu()
+    {
+        SceneManager.LoadScene(0);
+    }
+
+    private void OnEnable()
+    {
+        _retryButton.onClick.AddListener(HideScreen);
+        _exitButton.onClick.AddListener(OpenMainMenu);
+        _player.IsDead += ShowScreen;
+    }
+
+    private void Start()
+    {
+        _canvasGroup = GetComponent<CanvasGroup>();
+
+        HideScreen();
+    }
+
+    private void OnDisable()
+    {
+        _retryButton.onClick.RemoveListener(HideScreen);
+        _exitButton.onClick.RemoveListener(OpenMainMenu);
+        _player.IsDead -= ShowScreen;
+    }
+}

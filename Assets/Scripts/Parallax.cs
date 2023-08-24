@@ -5,12 +5,14 @@ using UnityEngine.Events;
 
 public class Parallax : MonoBehaviour
 {
-    [SerializeField] private BarrierSpawner _spawner;
+    [SerializeField] private BarrierSpawner _barrierSpawner;
+    [SerializeField] private BuildingSpawner _buildingSpawner;
     [SerializeField] private UnityEvent _isTargetPositionAchieved;
 
     private SpeedController _speedController;
     private Vector3 _startPosition = new Vector3(-25, 0, 0);
     private Vector3 _targetPosition = new Vector3(125, 0, 0);
+    private Material _currentMaterial;
     private float _speed = 10;
 
     public event UnityAction IsTargetPositionAchieved
@@ -19,12 +21,21 @@ public class Parallax : MonoBehaviour
         remove => _isTargetPositionAchieved.RemoveListener(value);
     }
 
-    private void OnEnable()
+    public void SetMaterial(Material material)
+    {
+        _currentMaterial = material;
+    }
+
+    private void Awake()
     {
         _speedController = transform.parent.GetComponent<SpeedController>();
+        GetComponent<MeshRenderer>().material = _currentMaterial;
 
         EditSpeed();
+    }
 
+    private void OnEnable()
+    {
         _speedController.SpeedWasIncreased += EditSpeed;
     }
 
@@ -47,8 +58,11 @@ public class Parallax : MonoBehaviour
     {
         transform.position = _startPosition;
 
-        _spawner.UpdateBarriersState();
+        _barrierSpawner.UpdateBarriersState();
+        _buildingSpawner.UpdateBuildingsState();
         _isTargetPositionAchieved?.Invoke();
+
+        GetComponent<MeshRenderer>().material = _currentMaterial;
     }
 
     private void EditSpeed()

@@ -32,4 +32,9 @@ public class ObjectPool : MonoBehaviour
 
         return result != null;
     }
+
+    protected bool CheckObjectUsage(int index)
+    {
+        return _pool[index].activeSelf;
+    }
 }
