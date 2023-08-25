@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
+[RequireComponent(typeof(MeshRenderer))]
+
 public class Parallax : MonoBehaviour
 {
     [SerializeField] private BarrierSpawner _barrierSpawner;
@@ -12,7 +14,8 @@ public class Parallax : MonoBehaviour
     private SpeedController _speedController;
     private Vector3 _startPosition = new Vector3(-25, 0, 0);
     private Vector3 _targetPosition = new Vector3(125, 0, 0);
-    private Material _currentMaterial;
+    private Material _targetMaterial;
+    private MeshRenderer _meshRenderer;
     private float _speed = 10;
 
     public event UnityAction IsTargetPositionAchieved
@@ -23,20 +26,25 @@ public class Parallax : MonoBehaviour
 
     public void SetMaterial(Material material)
     {
-        _currentMaterial = material;
+        _targetMaterial = material;
     }
 
     private void Awake()
     {
         _speedController = transform.parent.GetComponent<SpeedController>();
-        GetComponent<MeshRenderer>().material = _currentMaterial;
-
-        EditSpeed();
     }
 
     private void OnEnable()
     {
         _speedController.SpeedWasIncreased += EditSpeed;
+    }
+
+    private void Start()
+    {
+        _meshRenderer = GetComponent<MeshRenderer>();
+        _meshRenderer.material = _targetMaterial;
+
+        EditSpeed();
     }
 
     private void OnDisable()
@@ -62,7 +70,7 @@ public class Parallax : MonoBehaviour
         _buildingSpawner.UpdateBuildingsState();
         _isTargetPositionAchieved?.Invoke();
 
-        GetComponent<MeshRenderer>().material = _currentMaterial;
+        _meshRenderer.material = _targetMaterial;
     }
 
     private void EditSpeed()

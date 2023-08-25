@@ -11,7 +11,7 @@ public class ScoreShower : MonoBehaviour
 
     private float _score;
     private float _requireScore;
-    private float _requireScoreStep = 100;
+    private float _requireScoreStep = 600;
 
     public float Score => _score;
 

@@ -20,17 +20,16 @@ public class GameOverScreen : MonoBehaviour
         _canvasGroup.blocksRaycasts = true;
     }
 
+    private void RestartGame()
+    {
+        SceneManager.LoadScene(1);
+        Time.timeScale = 1;
+    }
+
     private void HideScreen()
     {
         _canvasGroup.alpha = 0;
         _canvasGroup.blocksRaycasts = false;
-
-        ContinueGame();
-    }
-
-    private void ContinueGame()
-    {
-        Time.timeScale = 1;
     }
 
     private void OpenMainMenu()
@@ -40,7 +39,7 @@ public class GameOverScreen : MonoBehaviour
 
     private void OnEnable()
     {
-        _retryButton.onClick.AddListener(HideScreen);
+        _retryButton.onClick.AddListener(RestartGame);
         _exitButton.onClick.AddListener(OpenMainMenu);
         _player.IsDead += ShowScreen;
     }
@@ -54,7 +53,7 @@ public class GameOverScreen : MonoBehaviour
 
     private void OnDisable()
     {
-        _retryButton.onClick.RemoveListener(HideScreen);
+        _retryButton.onClick.RemoveListener(RestartGame);
         _exitButton.onClick.RemoveListener(OpenMainMenu);
         _player.IsDead -= ShowScreen;
     }
