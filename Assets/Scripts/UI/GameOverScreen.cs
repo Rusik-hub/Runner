@@ -41,7 +41,7 @@ public class GameOverScreen : MonoBehaviour
     {
         _retryButton.onClick.AddListener(RestartGame);
         _exitButton.onClick.AddListener(OpenMainMenu);
-        _player.IsDead += ShowScreen;
+        _player.Dead += ShowScreen;
     }
 
     private void Start()
@@ -55,6 +55,6 @@ public class GameOverScreen : MonoBehaviour
     {
         _retryButton.onClick.RemoveListener(RestartGame);
         _exitButton.onClick.RemoveListener(OpenMainMenu);
-        _player.IsDead -= ShowScreen;
+        _player.Dead -= ShowScreen;
     }
 }

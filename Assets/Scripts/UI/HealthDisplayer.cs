@@ -15,11 +15,11 @@ public class HealthDisplayer : MonoBehaviour
 
     private void OnEnable()
     {
-        _player.IsHealthUpdated += DisplayHealth;
+        _player.HealthUpdated += DisplayHealth;
     }
 
     private void OnDisable()
     {
-        _player.IsHealthUpdated -= DisplayHealth;
+        _player.HealthUpdated -= DisplayHealth;
     }
 }

@@ -5,44 +5,47 @@ using UnityEngine.Events;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField] private UnityEvent _isHealthUpdated;
-    [SerializeField] private UnityEvent _isDead;
+    [SerializeField] private UnityEvent _healthUpdated;
+    [SerializeField] private UnityEvent _dead;
 
     private int _health = 3;
-    private int _damage = 1;
+    private int _minDamage = 1;
 
     public int Health => _health;
 
-    public event UnityAction IsHealthUpdated
+    public event UnityAction HealthUpdated
     {
-        add => _isHealthUpdated.AddListener(value);
-        remove => _isHealthUpdated.RemoveListener(value);
+        add => _healthUpdated.AddListener(value);
+        remove => _healthUpdated.RemoveListener(value);
     }
 
-    public event UnityAction IsDead
+    public event UnityAction Dead
     {
-        add => _isDead.AddListener(value);
-        remove => _isDead.RemoveListener(value);
+        add => _dead.AddListener(value);
+        remove => _dead.RemoveListener(value);
     }
 
     public void OnTriggerEnter(Collider collision)
     {
         if (collision.TryGetComponent<Barrier>(out Barrier barrier))
         {
-            TakeDamage();
+            TakeDamage(barrier.Damage);
 
-            _isHealthUpdated?.Invoke();
+            _healthUpdated?.Invoke();
         }
     }
 
     private void Awake()
     {
-        _isHealthUpdated?.Invoke();
+        _healthUpdated?.Invoke();
     }
 
-    private void TakeDamage()
+    private void TakeDamage(int damage)
     {
-        _health -= _damage;
+        if (damage > 0)
+            _health -= damage;
+        else
+            _health -= _minDamage;
 
         if (_health <= 0)
             Die();
@@ -52,6 +55,6 @@ public class Player : MonoBehaviour
     {
         Time.timeScale = 0;
 
-        _isDead?.Invoke();
+        _dead?.Invoke();
     }
 }
