@@ -8,7 +8,6 @@ using UnityEngine.UI;
 public class SettingsWindow : MonoBehaviour
 {
     [SerializeField] private Button _exitButton;
-    [SerializeField] private Slider _musicVolumeSlider;
 
     private CanvasGroup _canvasGroup;
 

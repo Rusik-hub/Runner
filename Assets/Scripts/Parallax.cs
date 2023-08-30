@@ -1,4 +1,4 @@
-using System.Collections;
+ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -9,7 +9,8 @@ public class Parallax : MonoBehaviour
 {
     [SerializeField] private BarrierSpawner _barrierSpawner;
     [SerializeField] private BuildingSpawner _buildingSpawner;
-    [SerializeField] private UnityEvent _isTargetPositionAchieved;
+    [SerializeField] private HealKitSpawner _healKitSpawner;
+    [SerializeField] private UnityEvent _targetPositionAchieved;
 
     private SpeedController _speedController;
     private Vector3 _startPosition = new Vector3(-25, 0, 0);
@@ -18,10 +19,10 @@ public class Parallax : MonoBehaviour
     private MeshRenderer _meshRenderer;
     private float _speed = 10;
 
-    public event UnityAction IsTargetPositionAchieved
+    public event UnityAction TargetPositionAchieved
     {
-        add => _isTargetPositionAchieved.AddListener(value);
-        remove => _isTargetPositionAchieved.RemoveListener(value);
+        add => _targetPositionAchieved.AddListener(value);
+        remove => _targetPositionAchieved.RemoveListener(value);
     }
 
     public void SetMaterial(Material material)
@@ -57,9 +58,7 @@ public class Parallax : MonoBehaviour
         transform.position = Vector3.MoveTowards(transform.position, _targetPosition, _speed * Time.deltaTime);
 
         if (transform.position.x >= _targetPosition.x)
-        {
             AchieveTargetPosition();
-        }
     }
 
     private void AchieveTargetPosition()
@@ -68,7 +67,7 @@ public class Parallax : MonoBehaviour
 
         _barrierSpawner.UpdateBarriersState();
         _buildingSpawner.UpdateBuildingsState();
-        _isTargetPositionAchieved?.Invoke();
+        _targetPositionAchieved?.Invoke();
 
         _meshRenderer.material = _targetMaterial;
     }

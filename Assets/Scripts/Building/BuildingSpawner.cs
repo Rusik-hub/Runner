@@ -27,7 +27,7 @@ public class BuildingSpawner : ObjectPool
         _spawnPointsCount = _points.Count;
         _prefabsCount = _prefabs.Count;
 
-        FillPull();
+        FillPull(_prefabs);
     }
 
     private void ShowRandomBuildings()
@@ -54,14 +54,6 @@ public class BuildingSpawner : ObjectPool
 
                 gameObject.SetActive(true);
             }
-        }
-    }
-
-    private void FillPull()
-    {
-        for (int i = 0; i < _prefabsCount; i++)
-        {
-            Initialize(_prefabs[i]);
         }
     }
 }

@@ -9,7 +9,6 @@ public class Player : MonoBehaviour
     [SerializeField] private UnityEvent _dead;
 
     private int _health = 3;
-    private int _minDamage = 1;
 
     public int Health => _health;
 
@@ -33,9 +32,14 @@ public class Player : MonoBehaviour
 
             _healthUpdated?.Invoke();
         }
+
+        if (collision.TryGetComponent<HealKit>(out HealKit healKit))
+        {
+            TakeHeal(healKit.HealValue);
+        }
     }
 
-    private void Awake()
+    private void Start()
     {
         _healthUpdated?.Invoke();
     }
@@ -44,11 +48,15 @@ public class Player : MonoBehaviour
     {
         if (damage > 0)
             _health -= damage;
-        else
-            _health -= _minDamage;
 
         if (_health <= 0)
             Die();
+    }
+
+    private void TakeHeal(int healValue)
+    {
+        if (healValue > 0)
+            _health += healValue;
     }
 
     private void Die()

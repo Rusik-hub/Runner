@@ -22,7 +22,8 @@ public class BarrierSpawner : ObjectPool
         _spawnPointsCount = _points.Count;
         _prefabsCount = _prefabs.Count;
 
-        FillPull();
+        for (int i = 0; i < _barriersOneTypeCount; i++)
+            FillPull(_prefabs);
     }
 
     private void ShowRandomBarriers()
@@ -48,17 +49,6 @@ public class BarrierSpawner : ObjectPool
         {
             secondResult.transform.position = _points[secondBarrierPoint].transform.position;
             secondResult.SetActive(true);
-        }
-    }
-
-    private void FillPull()
-    {
-        for (int i = 0; i < _barriersOneTypeCount; i++)
-        {
-            for (int j = 0; j < _prefabs.Count; j++)
-            {
-                Initialize(_prefabs[j]);
-            }
         }
     }
 }

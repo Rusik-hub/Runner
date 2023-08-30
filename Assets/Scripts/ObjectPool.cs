@@ -37,4 +37,12 @@ public class ObjectPool : MonoBehaviour
     {
         return _pool[index].activeSelf;
     }
+
+    protected void FillPull(List<GameObject> prefabs)
+    {
+        foreach (GameObject prefab in prefabs)
+        {
+            Initialize(prefab);
+        }
+    }
 }

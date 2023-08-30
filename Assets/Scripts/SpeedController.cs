@@ -33,7 +33,7 @@ public class SpeedController : MonoBehaviour
 
         for (int i = 0; i < _parallax.Count; i++)
         {
-            _parallax[i].IsTargetPositionAchieved += IncreaseSpeed;
+            _parallax[i].TargetPositionAchieved += IncreaseSpeed;
         }
     }
 
@@ -41,7 +41,7 @@ public class SpeedController : MonoBehaviour
     {
         for (int i = 0; i < _parallax.Count; i++)
         {
-            _parallax[i].IsTargetPositionAchieved -= IncreaseSpeed;
+            _parallax[i].TargetPositionAchieved -= IncreaseSpeed;
         }
     }
 }
