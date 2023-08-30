@@ -9,9 +9,9 @@ public class PlayerMover : MonoBehaviour
     [SerializeField] private SpeedController _speedController;
 
     private Coroutine _moveCoroutine;
-    private int _shiftSize = 1;
     private float _stepSize;
     private float _moveSpeed;
+    private int _shiftSize = 1;
     private int _minPathNumber = 0;
     private int _maxPathNumber;
     private int _currentPathNumber = 1;

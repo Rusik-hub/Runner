@@ -36,6 +36,8 @@ public class Player : MonoBehaviour
         if (collision.TryGetComponent<HealKit>(out HealKit healKit))
         {
             TakeHeal(healKit.HealValue);
+
+            _healthUpdated?.Invoke();
         }
     }
 

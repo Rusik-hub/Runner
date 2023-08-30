@@ -969,7 +969,7 @@ Transform:
   m_GameObject: {fileID: 5610746993833108033}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 11}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6496765309544612148}
@@ -996,6 +996,7 @@ MonoBehaviour:
   - {fileID: 2604410235374807690}
   - {fileID: 7723305336861044643}
   - {fileID: 3896764600189310704}
+  _parallax: {fileID: 2643794406416909553}
 --- !u!1 &5645560086359288723
 GameObject:
   m_ObjectHideFlags: 0
@@ -1320,7 +1321,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _barrierSpawner: {fileID: 4196336188015444103}
   _buildingSpawner: {fileID: 8454002515423513077}
-  _healKitSpawner: {fileID: 0}
+  _healKitSpawner: {fileID: 991576125603401115}
   _targetPositionAchieved:
     m_PersistentCalls:
       m_Calls: []
